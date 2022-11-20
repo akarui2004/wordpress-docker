@@ -1,0 +1,21 @@
+version: '3.8'
+
+networks:
+  wp_network:
+    driver: ${APP_NETWORK_DRIVER}
+volumes:
+  mysql:
+    driver: ${APP_VOLUME_DRIVER}
+
+services:
+  wordpress:
+    container_name: ${WP_CONTAINER_NAME}
+    build:
+      context: ./wordpress
+      args:
+        - WP_TAG_VERSION=${WP_VERSION}
+    tty: true
+    volumes:
+      - ${APP_CODE_PATH_HOST}:${WP_CODE_PATH}
+    networks:
+      - wp_network
