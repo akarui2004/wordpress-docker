@@ -19,3 +19,20 @@ services:
       - ${APP_CODE_PATH_HOST}:${WP_CODE_PATH}
     networks:
       - wp_network
+  mysql:
+    container_name: ${DB_CONTAINER_NAME}
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_VERSION=${DB_VERSION}
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE_NAME}
+      - MYSQL_USER=${DB_USER_NAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - TZ=${TIME_ZONE}
+    volumes:
+      - ${APP_DATA_PATH_HOST}/mysql:${DB_DATA_PATH}
+      - ${APP_DATA_PATH_HOST}/docker-entrypoint-initdb.d:${DB_DATA_ENTRYPOINT_INIT}
+    networks:
+      - wp_network
